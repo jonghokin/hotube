@@ -12,7 +12,7 @@ export default class Attachment extends Model<IAttachment> {
     @Column({ type: DataType.STRING(45), allowNull: false, defaultValue: DataType.UUIDV4 })
     uuid: string;
 
-    @Column({ type: DataType.ENUM('USER', 'CONTET') })
+    @Column({ type: DataType.ENUM('USER', 'CONTENT') })
     category?: categoryType;
 
     @Column({ type: DataType.STRING(255) })

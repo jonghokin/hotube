@@ -1,11 +1,11 @@
 import { Request } from 'express';
-import { categoryType } from '../../common/models/attachment/IAttachment';
 import InternalError from '../common/InternalError';
 import CODE from '../common/code';
 import Attachment from '../models/attachment/Attachment';
-import Content from '../models/content/Content';
+import { categoryType } from '../../common/attachment/IAttachment';
+import Content from '../models/content/IContent';
 import User from '../models/user/User';
-import { FileInfo, multipart } from './Common';
+import { FileInfo } from './Common';
 
 async function getRefererUuid(refererId: string): Promise<{ uuid: string, category: categoryType | undefined }> {
     const models: any = [
@@ -25,7 +25,7 @@ async function getRefererUuid(refererId: string): Promise<{ uuid: string, catego
 
 export async function AttachmentHelper(
     req: Request, uid: string,
-    refererId: string, category: categoryType,
+    refererId: any, category: categoryType,
     files: FileInfo[],
     t: any
 ): Promise<any[]> {
