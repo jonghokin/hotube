@@ -15,7 +15,7 @@ import { tokenSetup } from './src/common/Token'
 import env from './src/common/env'
 import { sequelizeInit } from './src/common/sequelize'
 import config from './src/configs/config'
-import UserController from './src/controller/clientController/UserController'
+//import UserController from './src/controller/clientController/UserController'
 import errorHandler from './src/middlewares/errorHandler'
 import router from './src/routes/index'
 import { specs } from './src/swagger/swagger.script'
@@ -70,11 +70,11 @@ const launch = (): express.Express => {
     app.use(cookieParser());
 
     //DB연동(사용자 정보 확인)
-    Passport.local({
-        session: false,
-        usernameField: env.PASSPORT_USERNAME,
-        passwordField: env.PASSPORT_PASSWORD,
-    }, UserController.login);
+    // Passport.local({
+    //     session: false,
+    //     usernameField: env.PASSPORT_USERNAME,
+    //     passwordField: env.PASSPORT_PASSWORD,
+    // }, UserController.login);
 
     // 토큰 유효성 확인
     Passport.jwt({
