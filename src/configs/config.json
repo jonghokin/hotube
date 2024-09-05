@@ -1,0 +1,29 @@
+{
+    "app": {
+        "name": "HOTUBE"
+    },
+    "port": 8080,
+    "database": {
+        "connectionLimit": 10,
+        "host": "localhost",
+        "port": 3306,
+        "username": "admin",
+        "database": "hotube",
+        "password": "1q2w3e4r!",
+        "dialect": "mysql",
+        "multipleStatements": true,
+        "logging": true,
+        "logQueryParameters": true,
+        "models": [
+            "../models/**/**/*.ts"
+        ],
+        "pool": {
+            "max": 4,
+            "min": 2
+        }
+    },
+    "storage": {
+        "static": "/",
+        "path": "/hotube_upload"
+    }
+}
