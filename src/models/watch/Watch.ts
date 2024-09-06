@@ -1,6 +1,6 @@
 import { BelongsTo, Column, CreatedAt, DataType, ForeignKey, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
 import IWatch from '../../../common/watch/IWatch';
-import Content from '../content/IContent';
+import Content from '../content/Content';
 import User from '../user/User';
 
 export interface WatchAttr extends IWatch {

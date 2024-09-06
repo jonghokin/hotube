@@ -1,6 +1,6 @@
 import { BelongsTo, Column, CreatedAt, DataType, ForeignKey, Model, PrimaryKey, Table } from 'sequelize-typescript';
 import IRecommend, { recommendType } from '../../../common/recommend/IRecommend';
-import Content from '../content/IContent';
+import Content from '../content/Content';
 import User from '../user/User';
 
 export interface RecommendAttr extends IRecommend {

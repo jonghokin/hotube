@@ -1,7 +1,7 @@
 import { BelongsTo, Column, CreatedAt, DataType, ForeignKey, HasMany, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
 import IChannel from '../../../common/channel/IChannel';
 import User from '../user/User';
-import Content from '../content/IContent';
+import Content from '../content/Content';
 
 export interface ChannelAttr extends IChannel {
     contents?: Content[];

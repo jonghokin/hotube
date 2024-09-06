@@ -3,7 +3,7 @@ import InternalError from '../common/InternalError';
 import CODE from '../common/code';
 import Attachment from '../models/attachment/Attachment';
 import { categoryType } from '../../common/attachment/IAttachment';
-import Content from '../models/content/IContent';
+import Content from '../models/content/Content';
 import User from '../models/user/User';
 import { FileInfo } from './Common';
 

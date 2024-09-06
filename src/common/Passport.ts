@@ -202,6 +202,7 @@ export default class Passport {
                 /POST:\/notice/,
                 /GET:\/notice\/[^\/]/,
                 /PUT:\/notice\/[^\/]/,
+                /GET:\/home/,
                 /GET:\/admin\/user/,
                 /POST:\/admin\/company/,
                 /DELETE:\/token/,

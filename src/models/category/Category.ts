@@ -1,6 +1,6 @@
 import { Column, CreatedAt, DataType, HasMany, Model, PrimaryKey, Table } from 'sequelize-typescript';
 import ICategory from '../../../common/category/ICategory';
-import Content from '../content/IContent';
+import Content from '../content/Content';
 
 export interface CategoryAttr extends ICategory {
     contents?: Content[];

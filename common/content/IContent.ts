@@ -3,6 +3,7 @@ export default interface IContent {
     thumbnailId?: string;
     categoryUuid: string;
     channelUuid: string;
+    viewCount?: number;
     title: string;
     tag?: string;
     description?: string;
