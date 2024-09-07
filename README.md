@@ -4,6 +4,9 @@
 Node.js, Typescript, express, sequelize로 구현하였으며,
 Rest api 기반의 백엔드 프로젝트 입니다.
 
+[ 서버 주소 및 스웨거 ]
+http://localhost:8080/swagger
+
 [ 개요 ]
 동영상 스트리밍 웹 사이트를 벤치마킹한 프로젝트입니다.
 
