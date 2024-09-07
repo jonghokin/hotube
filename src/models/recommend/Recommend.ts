@@ -4,6 +4,7 @@ import Content from '../content/Content';
 import User from '../user/User';
 
 export interface RecommendAttr extends IRecommend {
+    cancel?: boolean;
 }
 
 @Table({ tableName: 'Recommend', charset: 'utf8', updatedAt: false })

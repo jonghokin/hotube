@@ -6,6 +6,8 @@ export default interface IContent {
     thumbnailId?: string;
     categoryUuid: string;
     channelUuid: string;
+    status?: statusType;
+    complaintCount?: number;
     viewCount?: number;
     title: string;
     tag?: string;
@@ -20,4 +22,10 @@ export default interface IContent {
     isSubscribe?: boolean; //구독여부
     isRecommend?: boolean; //좋아요, 싫어요 여부
     creator?: IUser; //작성자
+}
+
+export enum statusType {
+    NORMAL = 'normal',
+    BLIND = 'blind',
+    RESTORE = 'restore'
 }

@@ -2,7 +2,7 @@ export default interface IRecommend {
     contentUuid: string;
     uid: string;
     type: recommendType;
-    createdAt: Date;
+    createdAt?: Date;
 }
 
 export enum recommendType {

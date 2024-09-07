@@ -4,6 +4,7 @@ import Content from '../content/Content';
 import User from '../user/User';
 
 export interface ReplyAttr extends IReply {
+    complaint?: boolean;
 }
 
 @Table({ tableName: 'Reply', charset: 'utf8' })
@@ -20,6 +21,9 @@ export default class Reply extends Model<IReply> {
     @ForeignKey(() => Reply)
     @Column({ type: DataType.STRING(45) })
     parentUuid?: string;
+
+    @Column({ type: DataType.INTEGER, defaultValue: 0 })
+    complaintCount?: number;
 
     @Column({ type: DataType.TEXT })
     description?: string;
