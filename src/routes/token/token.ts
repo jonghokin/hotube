@@ -46,8 +46,7 @@ const router = express.Router();
  *                          "context": {
  *                              "user":{
  *                                  "uid": "admin",
- *                                  "name": "아이투엘",
- *                                  "level": "admin"
+ *                                  "name": "어드민",
  *                              },
  *                              "isLogin":true
  *                          }
@@ -143,15 +142,13 @@ router.post('/', Passport.signin, (req: express.Request, res: express.Response) 
  *                          "context": {
  *                              "user":{
  *                                  "uid": "admin",
- *                                  "name": "아이투엘",
- *                                  "level": "admin"
+ *                                  "name": "admin",
  *                              },
  *                              "isLogin":true
  *                          },
  *                          "body": {
  *                              "uid": "admin",
- *                              "name": "아이투엘",
- *                              "level": "admin"
+ *                              "name": "admin",
  *                              }
  *                       }
  */

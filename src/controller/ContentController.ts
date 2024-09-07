@@ -47,22 +47,6 @@ export default class ContentController {
                     throw new InternalError(CODE.UnprocessableEntity, '동영상을 업로드 해주세요.');
                 }
 
-                let thumbnail: any;
-
-                if (files && files.length > 0) {
-                    const attachment = await AttachmentHelper(req, user.uid, null, categoryType.CONTENT, files, t);
-                    user.thumbnailId = attachment[0].uuid;
-
-                    thumbnail = await Attachment.findByPk(user.thumbnailId, { transaction: t });
-
-                    if (!thumbnail) {
-                        throw new InternalError(CODE.NotFound, '존재하지 않은 파일입니다.');
-                    }
-
-                    thumbnail.enable = true;
-                    await thumbnail.save({ transaction: t });
-                }
-
                 const content = new Content(fields as ContentAttr);
 
                 if (fields.tag) {
@@ -83,7 +67,6 @@ export default class ContentController {
                     content.description = '';
                 }
 
-                content.thumbnailId = thumbnail.uuid;
                 content.channelUuid = user.channel?.uuid;
                 content.creatorId = user.uid;
 
@@ -104,6 +87,23 @@ export default class ContentController {
                 }
 
                 await content.save({ transaction: t });
+
+                let thumbnail: any;
+
+                if (files && files.length > 0) {
+                    const attachment = await AttachmentHelper(req, user.uid, content.uuid, categoryType.CONTENT, files, t);
+                    content.thumbnailId = attachment[0].uuid;
+                    await content.save({ transaction: t });
+
+                    thumbnail = await Attachment.findByPk(user.thumbnailId, { transaction: t });
+
+                    if (!thumbnail) {
+                        throw new InternalError(CODE.NotFound, '존재하지 않은 파일입니다.');
+                    }
+
+                    thumbnail.enable = true;
+                    await thumbnail.save({ transaction: t });
+                }
 
                 const responseData = {
                     uuid: content.uuid,
@@ -130,6 +130,47 @@ export default class ContentController {
             response(req, res, CODE.InternalServerError, error);
         }
     }
+
+    // // 수정
+    // static contentUpdate = async (req: Request, res: Response) => {
+    //     try {
+    //         await Content.sequelize?.transaction(async t => {
+    //             const uid = res.locals.payload.uid;
+    //             const { fields, files } = await multipart(req);
+    //             const params = fields as ContentAttr
+
+    //             const content = await Content.findByPk(params.uuid, { transaction: t });
+
+    //             if (!content) {
+    //                 throw new InternalError(CODE.NotFound, '존재하지 않은 영상입니다.');
+    //             }
+
+    //             if (content.creatorId !== uid) {
+    //                 throw new InternalError(CODE.Auth.Unauthorized, '삭제 권한이 없습니다.');
+    //             }
+
+    //             let thumbnail: any;
+
+    //             if (files && files.length > 0) {
+    //                 const attachment = await AttachmentHelper(req, uid, content.uuid, categoryType.CONTENT, files, t);
+    //                 content.thumbnailId = attachment[0].uuid;
+
+    //                 thumbnail = await Attachment.findByPk(user.thumbnailId, { transaction: t });
+
+    //                 if (!thumbnail) {
+    //                     throw new InternalError(CODE.NotFound, '존재하지 않은 파일입니다.');
+    //                 }
+
+    //                 thumbnail.enable = true;
+    //                 await thumbnail.save({ transaction: t });
+    //             }
+
+
+    //         });
+    //     } catch (error) {
+    //         response(req, res, CODE.InternalServerError, error);
+    //     }
+    // }
 
     // 영상시청 (상세보기)
     static contentDetail = async (req: Request, res: Response) => {
