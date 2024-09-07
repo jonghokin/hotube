@@ -86,7 +86,7 @@ router.post('/', bqparam, ContentController.contentRegist)
  *            type: string
  *      responses:
  *        "200":
- *          description: 사용자 등록
+ *          description: 동영상 시청(상세)
  *          content:
  *            application/json:
  *              schema:
@@ -121,5 +121,41 @@ router.post('/', bqparam, ContentController.contentRegist)
  *                        }
  */
 router.get('/:uuid', bqparam, ContentController.contentDetail)
+
+/**
+ * @swagger
+ * paths:
+ *  /content/{uuid}:
+ *    delete:
+ *      tags:
+ *      - 동영상 관리
+ *      summary: "동영상 삭제"
+ *      description: ""
+ *      parameters:
+ *        - in: path
+ *          name: uuid
+ *          required: true
+ *          description: 컨텐츠 UUID
+ *          schema:
+ *            type: string
+ *      responses:
+ *        "200":
+ *          description: 동영상 삭제
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *              example: {
+ *                          "result":{
+ *                              "code":200,
+ *                              "message":"OK"
+ *                          },
+ *                          "context": {
+ *                            "isLogin": false
+ *                          },
+ *                          "body": "영상 삭제를 완료하였습니다."
+ *                        }
+ */
+router.delete('/:uuid', bqparam, ContentController.contentDelete)
 
 export default router;

@@ -6,6 +6,7 @@ import Channel from '../channel/Channel';
 import User from '../user/User';
 import Recommend from '../recommend/Recommend';
 import Reply from '../reply/Reply';
+import Watch from '../watch/Watch';
 
 export interface ContentAttr extends IContent {
     category?: string;
@@ -69,4 +70,7 @@ export default class Content extends Model<IContent> {
 
     @HasMany(() => Reply, 'contentUuid')
     replies?: Reply[]
+
+    @HasMany(() => Watch, 'contentUuid')
+    watchs?: Watch[]
 }

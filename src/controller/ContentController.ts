@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import htmlParser, { HTMLElement } from 'node-html-parser';
 import { categoryType } from '../../common/attachment/IAttachment';
+import { recommendType } from '../../common/recommend/IRecommend';
 import { AttachmentHelper } from '../common/AttachmentHelper';
 import { multipart } from '../common/Common';
 import InternalError from '../common/InternalError';
@@ -9,14 +10,13 @@ import response from '../common/response';
 import Attachment from '../models/attachment/Attachment';
 import Category from '../models/category/Category';
 import Channel from '../models/channel/Channel';
+import Complaint from '../models/complaint/Complaint';
 import Content, { ContentAttr } from '../models/content/Content';
-import User from '../models/user/User';
-import Subscribe from '../models/subscribe/Subscribe';
 import Recommend from '../models/recommend/Recommend';
 import Reply from '../models/reply/Reply';
-import { recommendType } from '../../common/recommend/IRecommend';
+import Subscribe from '../models/subscribe/Subscribe';
+import User from '../models/user/User';
 import Watch from '../models/watch/Watch';
-import Complaint from '../models/complaint/Complaint';
 
 export default class ContentController {
 
@@ -238,6 +238,49 @@ export default class ContentController {
 
                 return response(req, res, CODE.OK, responseData);
             });
+        } catch (error) {
+            response(req, res, CODE.InternalServerError, error);
+        }
+    }
+
+    // 동영상 삭제
+    static contentDelete = async (req: Request, res: Response) => {
+
+        try {
+            await Content.sequelize?.transaction(async t => {
+                const uid = res.locals.payload.uid;
+                const params: ContentAttr = req.body;
+
+                const content = await Content.findByPk(params.uuid, {
+                    include: [
+                        {
+                            model: Watch,
+                            as: 'watchs',
+                            required: false
+                        }
+                    ],
+                    transaction: t
+                });
+
+                if (!content) {
+                    throw new InternalError(CODE.NotFound, '존재하지 않은 영상입니다.');
+                }
+
+                // 권한처리
+                if (content.creatorId !== uid) {
+                    throw new InternalError(CODE.Auth.Unauthorized, '삭제 권한이 없습니다.');
+                }
+
+                // 삭제되는 영상의 시청기록을 모두 삭제
+                if (content.watchs) {
+                    const watch = await Watch.findByPk(content.uuid, { transaction: t })
+                    await watch?.destroy({ transaction: t });
+                }
+
+                await content.destroy({ transaction: t });
+
+                return response(req, res, CODE.OK, '영상 삭제를 완료하였습니다.');
+            })
         } catch (error) {
             response(req, res, CODE.InternalServerError, error);
         }
