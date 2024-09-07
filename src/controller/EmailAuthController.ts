@@ -5,6 +5,10 @@ import CODE from '../common/code';
 import response from '../common/response';
 import User, { UserAttr } from '../models/user/User';
 import VerificationCode, { VerificationCodeAttr } from '../models/verfication/VerficationCode';
+import _ from 'lodash';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // 네이버 SMTP 설정
 export const naverTransport = nodemailer.createTransport({
@@ -12,8 +16,8 @@ export const naverTransport = nodemailer.createTransport({
     port: 587,
     secure: false,
     auth: {
-        user: 'testemail2024@naver.com',
-        pass: 'MSQMRD39CZKV'
+        user: process.env.NAVER_EMAIL,
+        pass: process.env.NAVER_PASSWORD
     },
     tls: {
         rejectUnauthorized: false

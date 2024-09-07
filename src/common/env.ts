@@ -16,6 +16,8 @@ export interface Env {
     JWT_EXPIRATION_REFRESH?: number,
     EMAIL_SECRET_KEY: string,
     EMAIL_TOKEN_EXPIRATION_SEC?: number,
+    NAVER_EMAIL?: string,
+    NAVER_PASSWORD?: string;
     load: () => void,
     log: () => void,
 };
@@ -40,18 +42,20 @@ const load = () => {
     env = _.merge(env, {
         HTTP_PORT: process.env.HTTP_PORT ? Number(process.env.HTTP_PORT) : undefined,
         EXPRESS_PORT: process.env.EXPRESS_PORT ? Number(process.env.EXPRESS_PORT) : 8080,
-        PASSPORT_USERNAME: process.env.PASSPORT_USERNAME || 'uid',
-        PASSPORT_PASSWORD: process.env.PASSPORT_PASSWORD || 'password',
+        PASSPORT_USERNAME: process.env.PASSPORT_USERNAME,
+        PASSPORT_PASSWORD: process.env.PASSPORT_PASSWORD,
         PASSPORT_SESSION: Boolean(JSON.parse(process.env.PASSPORT_SESSION || 'false')),
-        JWT_CRYPTO_LENGTH: Number(process.env.JWT_CRYPTO_LENGTH || 16),
-        JWT_ACCESS_NAME: process.env.JWT_ACCESS_NAME || 'access',
-        JWT_REFRESH_NAME: process.env.JWT_REFRESH_NAME || 'refresh',
-        JWT_SECRETKEY: process.env.JWT_SECRETKEY || "'}h]oT-B@jwt'n:N",
-        JWT_ISSUER: process.env.JWT_ISSUER || 'hotube',
-        JWT_EXPIRATION_ACCESS: Number(process.env.JWT_EXPIRATION_ACCESS) || 1209600, //나중에 1800으로 변경
-        JWT_EXPIRATION_REFRESH: Number(process.env.JWT_EXPIRATION_REFRESH) || 1209600, //14일
-        EMAIL_TOKEN_EXPIRATION_SEC: Number(process.env.EMAIL_TOKEN_EXPIRATION_SEC) || 180,
-        EMAIL_SECRET_KEY: process.env.EMAIL_SECRET_KEY || "'}h]oT-B@mail'n:N",
+        JWT_CRYPTO_LENGTH: Number(process.env.JWT_CRYPTO_LENGTH),
+        JWT_ACCESS_NAME: process.env.JWT_ACCESS_NAME,
+        JWT_REFRESH_NAME: process.env.JWT_REFRESH_NAME,
+        JWT_SECRETKEY: process.env.JWT_SECRETKEY,
+        JWT_ISSUER: process.env.JWT_ISSUER,
+        JWT_EXPIRATION_ACCESS: Number(process.env.JWT_EXPIRATION_ACCESS),
+        JWT_EXPIRATION_REFRESH: Number(process.env.JWT_EXPIRATION_REFRESH),
+        EMAIL_TOKEN_EXPIRATION_SEC: Number(process.env.EMAIL_TOKEN_EXPIRATION_SEC),
+        EMAIL_SECRET_KEY: process.env.EMAIL_SECRET_KEY,
+        NAVER_EMAIL: process.env.NAVER_EMAIL,
+        NAVER_PASSWORD: process.env.NAVER_PASSWORD
     });
 };
 
