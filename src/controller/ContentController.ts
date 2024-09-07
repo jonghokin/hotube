@@ -11,6 +11,11 @@ import Category from '../models/category/Category';
 import Channel from '../models/channel/Channel';
 import Content, { ContentAttr } from '../models/content/Content';
 import User from '../models/user/User';
+import Subscribe from '../models/subscribe/Subscribe';
+import Recommend from '../models/recommend/Recommend';
+import Reply from '../models/reply/Reply';
+import { recommendType } from '../../common/recommend/IRecommend';
+import Watch from '../models/watch/Watch';
 
 export default class ContentController {
 
@@ -119,6 +124,114 @@ export default class ContentController {
 
                 return response(req, res, CODE.OK, responseData);
 
+            });
+        } catch (error) {
+            response(req, res, CODE.InternalServerError, error);
+        }
+    }
+
+    // 영상시청 (상세보기)
+    static contentDetail = async (req: Request, res: Response) => {
+
+        try {
+
+            await Content.sequelize?.transaction(async t => {
+
+                const params: ContentAttr = req.body;
+                const uid = res.locals.payload.uid;
+
+                const content: any = await Content.findByPk(params.uuid, {
+                    attributes: ['uuid', 'tag', 'viewCount'],
+                    include: [
+                        {
+                            model: Reply,
+                            as: 'replies',
+                            required: false
+                        },
+                        {
+                            model: Recommend,
+                            as: 'recommends',
+                            required: false
+                        },
+                        {
+                            model: User,
+                            as: 'creator',
+                            attributes: ['uid'],
+                            include: [
+                                {
+                                    model: Channel,
+                                    as: 'channel',
+                                    attributes: ['name'],
+                                    include: [
+                                        {
+                                            model: Subscribe,
+                                            as: 'subscribes',
+                                            required: false
+                                        }
+                                    ]
+                                },
+                                {
+                                    model: Attachment,
+                                    as: 'thumbnail',
+                                    attributes: ['uuid', 'path'],
+                                    required: false
+                                }
+                            ]
+                        }
+                    ],
+                    transaction: t
+                });
+
+                if (!content) {
+                    throw new InternalError(CODE.NotFound, '존재하지 않은 동영상입니다.');
+                }
+
+                // 구독여부
+                const subscribeStatus = await Subscribe.findByPk(uid, { transaction: t });
+
+                // 좋아요 또는 싫어요 여부
+                const recommendStatus = await Recommend.findByPk(uid, { transaction: t });
+
+                // 시청여부
+                const watchStatus = await Watch.findByPk(uid, { transaction: t });
+
+                // 시청기록등록
+                if (!watchStatus) {
+                    const watch = new Watch();
+                    watch.contentUuid = content.uuid;
+                    watch.uid = uid;
+                    await watch.save({ transaction: t });
+                }
+
+                //조회수 증가
+                content.viewCount += 1;
+                await content.save({ transaction: t });
+
+                const responseData = {
+                    uuid: content.uuid,
+                    title: content.title,
+                    tag: content.tag,
+                    creator: {
+                        uid: content.creator?.uid,
+                        thumbnail: content.creator?.thumbnailId ? {
+                            uuid: content.creator?.thumbnail?.uuid,
+                            path: content.creator?.thumbnail?.path,
+                        } : undefined,
+                        channeName: content.creator?.channel?.name,
+                    },
+                    subscribeCount: content.creator.channel.subscribes.length,
+                    viewCount: content.viewCount,
+                    replyCount: content.replies?.length,
+                    recommendCount: content.recommends?.length,
+                    recommendType: {
+                        likeCount: content.recommends?.filter((r: any) => r.type === recommendType.LIKE).length,
+                        hateCount: content.recommends?.filter((r: any) => r.type === recommendType.HATE).length,
+                    },
+                    isSubscribe: subscribeStatus ? true : false,
+                    isRecommend: recommendStatus ? true : false,
+                }
+
+                return response(req, res, CODE.OK, responseData);
             });
         } catch (error) {
             response(req, res, CODE.InternalServerError, error);

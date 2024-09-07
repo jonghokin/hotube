@@ -1,3 +1,6 @@
+import IUser from "../user/IUser";
+import { recommendType } from "../recommend/IRecommend";
+
 export default interface IContent {
     uuid: string;
     thumbnailId?: string;
@@ -9,4 +12,11 @@ export default interface IContent {
     description?: string;
     creatorId?: string;
     createdAt: Date;
+    subscribeCount?: number; //구독자수
+    replyCount?: number;     //댓글수
+    recommendCount?: number; //좋아요, 싫어요수
+    recommendType?: recommendType; //좋아요 또는 싫어요
+    isSubscribe?: boolean; //구독여부
+    isRecommend?: boolean; //좋아요, 싫어요 여부
+    creator?: IUser; //작성자
 }

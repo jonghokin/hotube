@@ -11,6 +11,7 @@ import User from '../models/user/User';
 
 export default class HomeController {
 
+    // todo : 알고리즘 추천
     // 메인화면
     static home = async (req: Request, res: Response) => {
 

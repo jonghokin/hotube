@@ -34,7 +34,7 @@ const router = express.Router();
  *                  description: 글 내용
  *      responses:
  *        "200":
- *          description: 사용자 등록
+ *          description: 동영상 등록
  *          content:
  *            application/json:
  *              schema:
@@ -67,5 +67,58 @@ const router = express.Router();
  *                        }
  */
 router.post('/', bqparam, ContentController.contentRegist)
+
+/**
+ * @swagger
+ * paths:
+ *  /content/{uuid}:
+ *    get:
+ *      tags:
+ *      - 동영상 관리
+ *      summary: "동영상 시청"
+ *      description: ""
+ *      parameters:
+ *        - in: path
+ *          name: uuid
+ *          required: true
+ *          description: 컨텐츠 UUID
+ *          schema:
+ *            type: string
+ *      responses:
+ *        "200":
+ *          description: 사용자 등록
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *              example: {
+ *                          "result":{
+ *                              "code":200,
+ *                              "message":"OK"
+ *                          },
+ *                          "context": {
+ *                            "isLogin": false
+ *                          },
+ *                          "body": {
+ *                            "uuid": "64c09f89-fe41-4cf8-8e88-bb6b9ff99da9",
+ *                            "tag": "<h1>게임</h1>",
+ *                            "creator": {
+ *                              "uid": "test",
+ *                              "channeName": "1의 채널"
+ *                            },
+ *                            "subscribeCount": 0,
+ *                            "viewCount": 0,
+ *                            "replyCount": 0,
+ *                            "recommendCount": 0,
+ *                            "recommendType": {
+ *                              "likeCount": 0,
+ *                              "hateCount": 0
+ *                            },
+ *                            "isSubscribe": false,
+ *                            "isRecommend": false
+ *                          }
+ *                        }
+ */
+router.get('/:uuid', bqparam, ContentController.contentDetail)
 
 export default router;

@@ -2,6 +2,7 @@ import { BelongsTo, Column, CreatedAt, DataType, ForeignKey, HasMany, Model, Pri
 import IChannel from '../../../common/channel/IChannel';
 import User from '../user/User';
 import Content from '../content/Content';
+import Subscribe from '../subscribe/Subscribe';
 
 export interface ChannelAttr extends IChannel {
     contents?: Content[];
@@ -38,4 +39,7 @@ export default class Channel extends Model<IChannel> {
 
     @HasMany(() => Content, 'channelUuid')
     contents?: Content[];
+
+    @HasMany(() => Subscribe, 'channelUuid')
+    subscribes?: Subscribe[];
 }

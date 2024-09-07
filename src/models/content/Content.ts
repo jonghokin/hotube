@@ -1,9 +1,11 @@
-import { BelongsTo, Column, CreatedAt, DataType, ForeignKey, Model, PrimaryKey, Table } from 'sequelize-typescript';
+import { BelongsTo, Column, CreatedAt, DataType, ForeignKey, HasMany, Model, PrimaryKey, Table } from 'sequelize-typescript';
 import IContent from '../../../common/content/IContent';
 import Attachment from '../attachment/Attachment';
 import Category from '../category/Category';
 import Channel from '../channel/Channel';
 import User from '../user/User';
+import Recommend from '../recommend/Recommend';
+import Reply from '../reply/Reply';
 
 export interface ContentAttr extends IContent {
     category?: string;
@@ -61,4 +63,10 @@ export default class Content extends Model<IContent> {
 
     @BelongsTo(() => User, 'creatorId')
     creator?: User;
+
+    @HasMany(() => Recommend, 'contentUuid')
+    recommends?: Recommend[]
+
+    @HasMany(() => Reply, 'contentUuid')
+    replies?: Reply[]
 }

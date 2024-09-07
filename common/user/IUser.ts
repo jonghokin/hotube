@@ -1,3 +1,5 @@
+import IAttachment from "../attachment/IAttachment";
+
 export default interface IUser {
     uid: string;
     name?: string;
@@ -8,4 +10,6 @@ export default interface IUser {
     phone?: string;
     createdAt: Date;
     updatedAt?: Date;
+    thumbnail?: IAttachment, //썸네일
+    channelName?: string //채널명
 }

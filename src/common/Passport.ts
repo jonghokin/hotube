@@ -198,9 +198,7 @@ export default class Passport {
 
             const PATTERNS = [
                 /POST:\/token/,
-                /POST:\/sns/,
-                /POST:\/notice/,
-                /GET:\/notice\/[^\/]/,
+                /GET:\/content\/[^\/]/,
                 /PUT:\/notice\/[^\/]/,
                 /GET:\/home/,
                 /GET:\/admin\/user/,
