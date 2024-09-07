@@ -17,6 +17,7 @@ import Reply from '../models/reply/Reply';
 import Subscribe from '../models/subscribe/Subscribe';
 import User from '../models/user/User';
 import Watch from '../models/watch/Watch';
+import { at } from 'lodash';
 
 export default class ContentController {
 
@@ -95,7 +96,7 @@ export default class ContentController {
                     content.thumbnailId = attachment[0].uuid;
                     await content.save({ transaction: t });
 
-                    thumbnail = await Attachment.findByPk(user.thumbnailId, { transaction: t });
+                    thumbnail = await Attachment.findByPk(content.thumbnailId, { transaction: t });
 
                     if (!thumbnail) {
                         throw new InternalError(CODE.NotFound, '존재하지 않은 파일입니다.');
@@ -131,46 +132,96 @@ export default class ContentController {
         }
     }
 
-    // // 수정
-    // static contentUpdate = async (req: Request, res: Response) => {
-    //     try {
-    //         await Content.sequelize?.transaction(async t => {
-    //             const uid = res.locals.payload.uid;
-    //             const { fields, files } = await multipart(req);
-    //             const params = fields as ContentAttr
+    // 수정
+    static contentUpdate = async (req: Request, res: Response) => {
+        try {
+            await Content.sequelize?.transaction(async t => {
+                const uid = res.locals.payload.uid;
+                const { fields, files } = await multipart(req);
+                const uuid = req.params.uuid;
 
-    //             const content = await Content.findByPk(params.uuid, { transaction: t });
+                const content = await Content.findByPk(uuid, { transaction: t });
 
-    //             if (!content) {
-    //                 throw new InternalError(CODE.NotFound, '존재하지 않은 영상입니다.');
-    //             }
+                if (!content) {
+                    throw new InternalError(CODE.NotFound, '존재하지 않은 영상입니다.');
+                }
 
-    //             if (content.creatorId !== uid) {
-    //                 throw new InternalError(CODE.Auth.Unauthorized, '삭제 권한이 없습니다.');
-    //             }
+                if (content.creatorId !== uid) {
+                    throw new InternalError(CODE.Auth.Unauthorized, '삭제 권한이 없습니다.');
+                }
 
-    //             let thumbnail: any;
+                let thumbnail: any;
 
-    //             if (files && files.length > 0) {
-    //                 const attachment = await AttachmentHelper(req, uid, content.uuid, categoryType.CONTENT, files, t);
-    //                 content.thumbnailId = attachment[0].uuid;
+                if (files && files.length > 0) {
 
-    //                 thumbnail = await Attachment.findByPk(user.thumbnailId, { transaction: t });
+                    if (content.thumbnailId) {
+                        const orginAtt: any = await Attachment.findOne({
+                            where: { refererUuid: content.uuid },
+                            transaction: t
+                        });
 
-    //                 if (!thumbnail) {
-    //                     throw new InternalError(CODE.NotFound, '존재하지 않은 파일입니다.');
-    //                 }
+                        await orginAtt.destroy({ transaction: t });
+                    }
 
-    //                 thumbnail.enable = true;
-    //                 await thumbnail.save({ transaction: t });
-    //             }
+                    const attachment = await AttachmentHelper(req, uid, content.uuid, categoryType.CONTENT, files, t);
+                    content.thumbnailId = attachment[0].uuid;
+                    await content.save({ transaction: t });
 
+                    thumbnail = await Attachment.findByPk(content.thumbnailId, { transaction: t });
 
-    //         });
-    //     } catch (error) {
-    //         response(req, res, CODE.InternalServerError, error);
-    //     }
-    // }
+                    if (!thumbnail) {
+                        throw new InternalError(CODE.NotFound, '존재하지 않은 파일입니다.');
+                    }
+
+                    thumbnail.enable = true;
+                    await thumbnail.save({ transaction: t });
+                }
+
+                let category;
+
+                if (fields.category) {
+
+                    category = await Category.findOne({
+                        where: { name: fields.category },
+                        transaction: t
+                    });
+
+                    if (!category) {
+                        throw new InternalError(CODE.NotFound, '존재하지 않은 카테고리입니다.');
+                    }
+
+                    content.set('categoryUuid', category.uuid);
+                }
+
+                if (fields.tag) {
+                    const root = htmlParser(fields.tag);
+                    const excludedTags = ['figure', '&nbsp;'];
+
+                    content.description = root.childNodes
+                        .filter(node => {
+                            if (node.nodeType !== 1) return true;
+                            const element = node as HTMLElement;
+                            return !excludedTags.includes(element.tagName.toLowerCase());
+                        })
+                        .map(node => node.rawText.replace(/&nbsp;/g, '').trim())
+                        .join(' ')
+                        .trim();
+
+                } else {
+                    content.description = '';
+                }
+
+                content.set('title', fields.title);
+
+                await content.save({ transaction: t });
+
+                return response(req, res, CODE.OK, '수정이 완료되었습니다.');
+
+            });
+        } catch (error) {
+            response(req, res, CODE.InternalServerError, error);
+        }
+    }
 
     // 영상시청 (상세보기)
     static contentDetail = async (req: Request, res: Response) => {

@@ -1,31 +1,32 @@
 import { Request } from 'express';
+import { v4 as uuidv4 } from 'uuid';
+import { categoryType } from '../../common/attachment/IAttachment';
 import InternalError from '../common/InternalError';
 import CODE from '../common/code';
 import Attachment from '../models/attachment/Attachment';
-import { categoryType } from '../../common/attachment/IAttachment';
 import Content from '../models/content/Content';
 import User from '../models/user/User';
 import { FileInfo } from './Common';
 
-async function getRefererUuid(refererId: string): Promise<{ uuid: string, category: categoryType | undefined }> {
+async function getRefererUuid(refererUuid: string): Promise<{ uuid: string, category: categoryType | undefined }> {
     const models: any = [
         { model: User, key: 'uid', category: 'user' },
         { model: Content, key: 'uuid', category: 'content' },
     ];
 
     for (const { model, key, category } of models) {
-        const result = await model.findOne({ where: { [key]: refererId }, attributes: [key] });
+        const result = await model.findOne({ where: { [key]: refererUuid }, attributes: [key] });
         if (result) {
             return { uuid: result[key], category: category as categoryType };
         }
     }
 
-    return { uuid: refererId, category: undefined };
+    return { uuid: refererUuid, category: undefined };
 }
 
 export async function AttachmentHelper(
     req: Request, uid: string,
-    refererId: any, category: categoryType,
+    refererUuid: any, category: categoryType,
     files: FileInfo[],
     t: any
 ): Promise<any[]> {
@@ -34,12 +35,13 @@ export async function AttachmentHelper(
         throw new InternalError(CODE.NoContent, "파일이 존재하지 않습니다.");
     }
 
-    const { uuid: validRefererId, category: refererCategory } = await getRefererUuid(refererId);
+    const { uuid: validrefererUuid, category: refererCategory } = await getRefererUuid(refererUuid);
 
     const attachments = await Promise.all(files.map(async (file: any) => {
         const type = req.body.type ? req.body.type : file.mime.split('/')[0];
         const attachment = new Attachment({
             ...req.body,
+            uuid: uuidv4(),
             name: file.name,
             origin: file.origin,
             size: file.size,
@@ -47,7 +49,7 @@ export async function AttachmentHelper(
             format: file.mime,
             type,
             creatorId: uid,
-            refererId: validRefererId || refererId,
+            refererUuid: validrefererUuid || refererUuid,
             category: category !== null ? category : (refererCategory || undefined),
             enable: false
         });
