@@ -16,6 +16,7 @@ export default interface IContent {
     replyCount?: number;     //댓글수
     recommendCount?: number; //좋아요, 싫어요수
     recommendType?: recommendType; //좋아요 또는 싫어요
+    isComplaint?: boolean; //신고여부
     isSubscribe?: boolean; //구독여부
     isRecommend?: boolean; //좋아요, 싫어요 여부
     creator?: IUser; //작성자

@@ -16,6 +16,7 @@ import Recommend from '../models/recommend/Recommend';
 import Reply from '../models/reply/Reply';
 import { recommendType } from '../../common/recommend/IRecommend';
 import Watch from '../models/watch/Watch';
+import Complaint from '../models/complaint/Complaint';
 
 export default class ContentController {
 
@@ -192,6 +193,9 @@ export default class ContentController {
                 // 좋아요 또는 싫어요 여부
                 const recommendStatus = await Recommend.findByPk(uid, { transaction: t });
 
+                // 신고여부
+                const complaintStatus = await Complaint.findByPk(uid, { transaction: t });
+
                 // 시청여부
                 const watchStatus = await Watch.findByPk(uid, { transaction: t });
 
@@ -227,6 +231,7 @@ export default class ContentController {
                         likeCount: content.recommends?.filter((r: any) => r.type === recommendType.LIKE).length,
                         hateCount: content.recommends?.filter((r: any) => r.type === recommendType.HATE).length,
                     },
+                    isComplaint: complaintStatus ? true : false,
                     isSubscribe: subscribeStatus ? true : false,
                     isRecommend: recommendStatus ? true : false,
                 }

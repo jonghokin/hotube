@@ -114,6 +114,7 @@ router.post('/', bqparam, ContentController.contentRegist)
  *                              "likeCount": 0,
  *                              "hateCount": 0
  *                            },
+ *                            "isComplaint": false,
  *                            "isSubscribe": false,
  *                            "isRecommend": false
  *                          }
