@@ -71,8 +71,14 @@ export default class HomeController {
                         'uuid', 'title', 'viewCount', 'createdAt', 'categoryUuid',
                         // 시청한 동영상을 목록 뒤로 배치
                         [Sequelize.literal(`CASE 
-                            WHEN \`category\`.\`name\` = '${topCategory}' AND \`Content\`.\`uuid\` NOT IN (${watchedContentUuids.map(uuid => `'${uuid}'`).join(', ')}) THEN 1 
-                            WHEN \`category\`.\`name\` = '${topCategory}' AND \`Content\`.\`uuid\` IN (${watchedContentUuids.map(uuid => `'${uuid}'`).join(', ')}) THEN 2 
+                            WHEN \`category\`.\`name\` = '${topCategory}' AND ${watchedContentUuids.length > 0
+                                ? `\`Content\`.\`uuid\` NOT IN (${watchedContentUuids.map(uuid => `'${uuid}'`).join(', ')})`
+                                : '1 = 1'  // 비어있는 경우 항상 참이 되는 조건
+                            } THEN 1 
+                            WHEN \`category\`.\`name\` = '${topCategory}' AND ${watchedContentUuids.length > 0
+                                ? `\`Content\`.\`uuid\` IN (${watchedContentUuids.map(uuid => `'${uuid}'`).join(', ')})`
+                                : '1 = 0'  // 비어있는 경우 항상 거짓이 되는 조건
+                            } THEN 2 
                             ELSE 3 END`), 'priority']
                     ],
                     include: [

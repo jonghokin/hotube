@@ -1,11 +1,12 @@
 import express from 'express';
-import token from './token/index';
-import user from './user/index';
+import complaint from './complaint/index';
+import content from './content/index';
 import email from './email/index';
 import home from './home/index';
-import content from './content/index';
 import recommend from './recommend/index';
-import complaint from './complaint/index';
+import reply from './reply/index';
+import token from './token/index';
+import user from './user/index';
 
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.use('/home', home);
 router.use('/content', content);
 router.use('/recommend', recommend);
 router.use('/complaint', complaint);
+router.use('/reply', reply);
 
 export default router;
