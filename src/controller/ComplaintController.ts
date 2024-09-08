@@ -34,9 +34,10 @@ export default class ComplaintController {
                 if (!complaintBoolean) {
                     if (excitingComplaint) {
                         await excitingComplaint?.destroy({ transaction: t });
+                        content.complaintCount = Math.max(0, content.complaintCount - 1); // 신고 취소 시 카운트 감소
+                        await content.save({ transaction: t });
                         return response(req, res, CODE.OK, '해당 영상의 신고를 취소하였습니다.')
                     }
-                    content.complaintCount = Math.max(0, content.complaintCount - 1); //신고 취소
                     return response(req, res, CODE.OK, '신고내역이 존재하지 않습니다.')
 
                 } else {
@@ -88,9 +89,10 @@ export default class ComplaintController {
                 if (!complaintBoolean) {
                     if (excitingComplaint) {
                         await excitingComplaint?.destroy({ transaction: t });
+                        reply.complaintCount = Math.max(0, reply.complaintCount - 1); //신고 취소
+                        await reply.save({ transaction: t });
                         return response(req, res, CODE.OK, '해당 댓글의 신고를 취소하였습니다.')
                     }
-                    reply.complaintCount = Math.max(0, reply.complaintCount - 1); //신고 취소
                     return response(req, res, CODE.OK, '신고내역이 존재하지 않습니다.')
 
                 } else {
