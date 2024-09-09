@@ -25,6 +25,9 @@ export default class Reply extends Model<IReply> {
     @Column({ type: DataType.INTEGER, defaultValue: 0 })
     complaintCount?: number;
 
+    @Column({ type: DataType.BOOLEAN, defaultValue: false })
+    pinned?: boolean;
+
     @Column({ type: DataType.TEXT })
     description?: string;
 

@@ -1,8 +1,64 @@
 import express from "express";
 import ReplyController from "../../controller/ReplyController";
 import bqparam from "../../common/bqparam";
-
+import childReply from './childReply';
 const router = express.Router();
+
+router.use('/:uuid/childReply', (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    req.query.uuid = req.params.uuid,
+        next();
+}, childReply);
+
+/**
+ * @swagger
+ * paths:
+ *  /reply/content/{uuid}:
+ *    get:
+ *      tags:
+ *      - 댓글 관리
+ *      summary: "부모댓글 리스트"
+ *      description: ""
+ *      parameters:
+ *        - in: path
+ *          name: uuid
+ *          required: true
+ *          description: 컨텐츠 UUID
+ *          schema:
+ *            type: string
+ *      responses:
+ *        "200":
+ *          description: 결과값
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *              example: {
+ *                          "result":{
+ *                              "code":200,
+ *                              "message":"OK"
+ *                          },
+ *                          "context": {
+ *                            "isLogin": false
+ *                          },
+ *                          "body": [
+ *                            {
+ *                              "uuid": "b9fdb018-3167-4275-8269-33bdd4d29c99",
+ *                              "description": "부모댓글 수정",
+ *                              "pinned": false,
+ *                              "createdAt": "2024-09-08T14:44:24.000Z",
+ *                              "childReplies": 1,
+ *                              "isMyContent": true,
+ *                              "isMyReply": true,
+ *                              "creator": {
+ *                                "uid": "test",
+ *                                "name": "1",
+ *                                "thumbnail": {}
+ *                              }
+ *                            }
+ *                          ]
+ *                        }
+ */
+router.get('/content/:uuid', bqparam, ReplyController.parentReplyList)
 
 /**
  * @swagger
