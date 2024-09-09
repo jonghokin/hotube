@@ -49,19 +49,12 @@ const router = express.Router();
  *                          },
  *                          "context": {
  *                              "user": {
- *                                  "uid": "admin@i2l.co.kr",
- *                                  "name": "어드민",
- *                                  "level": "admin",
- *                                  "createdAt": "2024-04-23T23:45:19.000Z"
+ *                                  "uid": "admin",
+ *                                  "name": "어드민"
  *                              },
  *                              "isLogin": true
  *                          },
- *                            "body": {
- *                              "uid": "group1",
- *                              "name": "이강인",
- *                              "updatedAt": "2024-05-28T05:56:22.931Z",
- *                              "password": "0000"
- *                            }
+ *                            "body": "비밀번호를 재설정하였습니다."
  *                        }
  *        "400":
  *          description: |

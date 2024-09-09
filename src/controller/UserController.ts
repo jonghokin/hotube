@@ -164,7 +164,7 @@ export default class UserController {
         const params: UserAttr = req.body;
 
         try {
-            const result = await User.sequelize?.transaction(async (t) => {
+            await User.sequelize?.transaction(async (t) => {
                 const authCode: any = await VerificationCode.findOne({
                     where: { code: req.body.authCode },
                 });
@@ -209,7 +209,7 @@ export default class UserController {
                 };
             });
 
-            response(req, res, CODE.OK, result);
+            response(req, res, CODE.OK, '비밀번호를 재설정하였습니다.');
         } catch (error) {
             response(req, res, CODE.InternalServerError, error);
         }

@@ -47,39 +47,22 @@ const router = express.Router();
  *                          "context": {
  *                            "user": {
  *                              "uid": "test",
- *                              "name": "1",
- *                              "createdAt": "2024-04-23T23:45:19.000Z"
+ *                              "name": "1"
  *                            },
  *                            "isLogin": true
  *                          },
- *                          "body":
- *                              {
- *                                  "authCode": "084SRO"
+ *                          "body": [
+ *                            {
+ *                              "uuid": "1d8a8d0f-65fa-4581-848d-2dac81136322",
+ *                              "title": "1",
+ *                              "viewCount": 1,
+ *                              "createdAt": "2024-09-07T17:51:44.000Z",
+ *                              "category": "game",
+ *                              "creator": {
+ *                                "uid": "test"
  *                              }
- *                       }
- *        "404":
- *          description: 해당 리소스가 존재하지 않습니다
- *          content:
- *            application/json:
- *              schema:
- *                type: object
- *              example: {
- *                          "result":{
- *                              "code":404,
- *                              "message":"해당 리소스가 존재하지 않습니다."
- *                          }
- *                       }
- *        "500":
- *          description: 인증 이메일 발송 실패
- *          content:
- *            application/json:
- *              schema:
- *                type: object
- *              example: {
- *                          "result":{
- *                              "code":500,
- *                              "message":"InternalServerError"
- *                          }
+ *                            }
+ *                          ]
  *                       }
  */
 router.get('/', bqparam, HomeController.home);

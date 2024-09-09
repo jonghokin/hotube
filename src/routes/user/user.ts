@@ -46,7 +46,7 @@ router.use('/:uid/password', (req: express.Request, res: express.Response, next:
  *                  description: 비밀번호 확인
  *      responses:
  *        "200":
- *          description: 사용자 등록
+ *          description: 결과값
  *          content:
  *            application/json:
  *              schema:
@@ -92,7 +92,7 @@ router.post('/', bqparam, UserController.signUp)
  *                  format: binary
  *      responses:
  *        "200":
- *          description: 사용자 등록
+ *          description: 결과값
  *          content:
  *            application/json:
  *              schema:
@@ -146,7 +146,7 @@ router.put('/profileUpdate', bqparam, UserController.profileUpdate)
  *                  description: 비밀번호 확인
  *      responses:
  *        "200":
- *          description: 사용자 등록
+ *          description: ㅍ
  *          content:
  *            application/json:
  *              schema:
@@ -203,7 +203,7 @@ router.put('/passwordUpdate', bqparam, UserController.passwordUpdate)
  *                  description: 생년월일
  *      responses:
  *        "200":
- *          description: 사용자 등록
+ *          description: 결과값
  *          content:
  *            application/json:
  *              schema:
@@ -244,7 +244,7 @@ router.put('/userInfoUpdate', bqparam, UserController.userInfoUpdate)
  *      description: ""
  *      responses:
  *        "200":
- *          description: 사용자 등록
+ *          description: 결과값
  *          content:
  *            application/json:
  *              schema:
@@ -261,15 +261,7 @@ router.put('/userInfoUpdate', bqparam, UserController.userInfoUpdate)
  *                            },
  *                            "isLogin": true
  *                          },
- *                          "body": {
- *                            "uid": "test",
- *                            "thumbnail": {
- *                              "uuid": "ac2683ad-215e-4f2b-a810-8c357feb93c1",
- *                              "path": "/hotube_upload/240905/1725547087537.jpg",
- *                              "name": "1725547087537.jpg",
- *                              "origin": "다운로드.jpg"
- *                            }
- *                          }
+ *                          "body": "회원 탈퇴가 완료되었습니다."
  *                        }
  */
 router.delete('/withdraw', bqparam, UserController.withdraw)

@@ -46,17 +46,11 @@ const router = express.Router();
  *                          "context": {
  *                              "user": {
  *                                  "uid": "admin",
- *                                  "name": "관리자",
- *                                  "level": "admin"
+ *                                  "name": "관리자"
  *                              },
  *                              "isLogin": true
  *                          },
- *                          "body":[
- *                              {
- *                                  "uuid":"12fadae9-1ea1-2d2e-b11a-11be11bac1f1",
- *                                  "complatintCount":"5"
- *                              }
- *                          ]
+ *                          "body": "해당 영상을 신고하였습니다."
  *                       }
  *        "404":
  *          description: 해당 리소스가 존재하지 않습니다
@@ -115,17 +109,11 @@ router.post('/content/:uuid', bqparam, ComplaintController.contentCompalint);
  *                          "context": {
  *                              "user": {
  *                                  "uid": "admin",
- *                                  "name": "관리자",
- *                                  "level": "admin"
+ *                                  "name": "관리자"
  *                              },
  *                              "isLogin": true
  *                          },
- *                          "body":[
- *                              {
- *                                  "uuid":"12fadae9-1ea1-2d2e-b11a-11be11bac1f1",
- *                                  "complatintCount":"5"
- *                              }
- *                          ]
+ *                          "body": "해당 댓글을 신고하였습니다."
  *                       }
  *        "404":
  *          description: 해당 리소스가 존재하지 않습니다
