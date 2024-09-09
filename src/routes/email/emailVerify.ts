@@ -38,10 +38,8 @@ const router = express.Router();
  *                          },
  *                          "context": {
  *                            "user": {
- *                              "uid": "admin@i2l.co.kr",
- *                              "name": "어드민",
- *                              "level": "admin",
- *                              "createdAt": "2024-04-23T23:45:19.000Z"
+ *                              "uid": "admin",
+ *                              "name": "어드민"
  *                            },
  *                            "isLogin": true
  *                          },

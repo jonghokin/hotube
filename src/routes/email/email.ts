@@ -40,8 +40,7 @@ router.use('/verify', (req: express.Request, res: express.Response, next: expres
  *                          "context": {
  *                            "user": {
  *                              "uid": "test",
- *                              "name": "1",
- *                              "createdAt": "2024-04-23T23:45:19.000Z"
+ *                              "name": "1"
  *                            },
  *                            "isLogin": true
  *                          },
