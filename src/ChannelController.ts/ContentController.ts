@@ -254,7 +254,7 @@ export default class ContentController {
                                 {
                                     model: Channel,
                                     as: 'channel',
-                                    attributes: ['uuid', 'name'],
+                                    attributes: ['name'],
                                     include: [
                                         {
                                             model: Subscribe,
@@ -313,10 +313,7 @@ export default class ContentController {
                             uuid: content.creator?.thumbnail?.uuid,
                             path: content.creator?.thumbnail?.path,
                         } : undefined,
-                        channel: {
-                            uuid: content.creator?.channel?.uuid,
-                            name: content.creator?.channel?.name,
-                        }
+                        channeName: content.creator?.channel?.name,
                     },
                     subscribeCount: content.creator.channel.subscribes.length,
                     viewCount: content.viewCount,

@@ -10,7 +10,7 @@ import response from '../common/response';
 import Attachment from '../models/attachment/Attachment';
 import Channel from '../models/channel/Channel';
 import User, { UserAttr } from '../models/user/User';
-import VerificationCode from '..//models/verfication/VerficationCode';
+import VerificationCode from '../models/verfication/VerficationCode';
 
 export default class UserController {
 
@@ -50,7 +50,7 @@ export default class UserController {
 
                 // 채널 생성
                 const myChannel = new Channel();
-                myChannel.ownerId = user.uid;
+                myChannel.uid = user.uid;
                 myChannel.name = `${user.name}의 채널`;
                 await myChannel.save({ transaction: t });
 
@@ -285,8 +285,7 @@ export default class UserController {
                         attributes: ['uuid', 'path'],
                         required: false
                     }
-                ],
-                where: { uid: uid }
+                ]
             });
 
             if (!user) {

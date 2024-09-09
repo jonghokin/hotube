@@ -7,6 +7,7 @@ import recommend from './recommend/index';
 import reply from './reply/index';
 import token from './token/index';
 import user from './user/index';
+import channel from './channel/index';
 
 const router = express.Router();
 
@@ -18,5 +19,6 @@ router.use('/content', content);
 router.use('/recommend', recommend);
 router.use('/complaint', complaint);
 router.use('/reply', reply);
+router.use('/channel', channel);
 
 export default router;

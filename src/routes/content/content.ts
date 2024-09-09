@@ -175,7 +175,10 @@ router.put('/:uuid', bqparam, ContentController.contentUpdate)
  *                            "tag": "<h1>게임</h1>",
  *                            "creator": {
  *                              "uid": "test",
- *                              "channeName": "1의 채널"
+ *                              "channel": {
+ *                                  "uuid": "1234",
+ *                                  "name": "test의 채널"
+ *                              }
  *                            },
  *                            "subscribeCount": 0,
  *                            "viewCount": 0,

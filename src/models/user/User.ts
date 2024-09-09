@@ -50,8 +50,8 @@ export default class User extends Model<IUser> {
     @BelongsTo(() => Attachment, 'thumbnailId')
     thumbnail?: Attachment;
 
-    @HasOne(() => Channel, 'uid')
-    channel?: Channel;
+    @HasOne(() => Channel, 'ownerId')
+    owner?: Channel;
 
     @HasMany(() => Complaint, 'uid')
     complaints?: Complaint[]
